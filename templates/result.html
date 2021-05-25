@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block results %}
+<hr/>
+
+    <table class="table">
+        <tr>
+            <th scope="col">Nazwa</th>
+            <th scope="col">Średnica [m]</th>
+            <th scope="col">Dystans [km]</th>
+            <th scope="col">Liczba spotkań</th>
+            <th scope="col">Max. szansa kolizji</th>
+            <th scope="col">Data</th>
+            <th scope="col">Spotkań w ciągu 100 lat</th>
+            <th scope="col">Szansa kolizji w ciągu 100 lat</th>
+        </tr>
+        {% for o in data %}
+            <tr>
+                <td>{{ o['name']  }}</td>
+                <td>{{ "%.2f"|format(o['diameter'])}}</td>
+                <td>{{ "%.3f"|format(o['dist']) }}</td>
+                <td>{{ o['nearby_count'] }}</td>
+                <td>{{ "%.3f"|format(o['max_prob']) }} %</td>
+                <td>{{ o['date'].strftime('%Y-%m-%d') }}</td>
+                <td>{{ o['total_100_times'] }}</td>
+                <td>{{ "%.3f"|format(o['total_100_prob']) }} %</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

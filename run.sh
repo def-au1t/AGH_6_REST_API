@@ -1,0 +1,1 @@
+gunicorn --worker-class gevent --workers 5 --bind 0.0.0.0:5000 wsgi:app --max-requests 10000 --timeout 15 --keep-alive 15 --log-level info

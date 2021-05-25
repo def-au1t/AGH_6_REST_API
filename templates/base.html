@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Earth collision detector</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script>
+        function updateTextInput(val) {
+            document.getElementById('textInput').value = val;
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1 class="p-3 text-center">Detektor obiektów kosmicznych</h1>
+
+    <div class="col-12 col-md-6 offset-md-3">
+        <form action="/" method="POST">
+            <div class="row">
+                <div class="col-6">
+                    <label class="form-label" for="from"> Od:</label>
+                    <input id="from" class="form-control" type="date" name="from" value="2021-05-10" required/>
+                </div>
+                <div class="col-6">
+                    <label class="form-label" for="to"> Do: </label>
+                    <input id="to" class="form-control" type="date" name="to" value="2080-12-31" required/>
+                </div>
+            </div>
+            <label class="form-label" for="prob"> Minimalne prawdopodobieństwo kolizji:</label>
+
+            <div class="row">
+                <div class="col-2"><span id="range_val">0.01 %</span></div>
+                <div class="col-10">
+                    <input class="form-control form-range" type="range" min="-6" max="-3" value="-4" name="prob"
+                           id="prob"
+                           onchange="document.getElementById('range_val').innerText = `0.${'0'.repeat(-this.value-3)}1 %`;">
+                </div>
+            </div>
+            <label class="form-label" for id="limit"> Max. liczba obiektów:</label>
+            <input class="form-control" type="number" name="limit" value="5" id="limit" required/>
+
+            <div class="text-center">
+                <button class="btn btn-primary mx-auto mt-3" type="submit">
+                    Zobacz statystyki!
+                </button>
+            </div>
+        </form>
+    </div>
+    {% if message %}
+        <div class="alert alert-danger mt-2" role="alert">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    {% block results %}{% endblock %}
+</div>
+
+</body>
+</html>
