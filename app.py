@@ -85,13 +85,23 @@ def create_app():
             res['nearby_count'] = len(data)
             data.sort(key=lambda x: float(x['ip']), reverse=True)
             res['max_prob'] = float(data[0]['ip']) * 100
-            res['dist'] = float(data[0]['dist'])*6420
-            res['date'] = datetime.strptime(data[0]['date'].split(".")[0], '%Y-%m-%d')
-            res['diameter'] = float(object['summary']['diameter'])*1000
+            if 'dist' in data[0]:
+                res['dist'] = float(data[0]['dist'])*6420
+            else:
+                res['dist'] = float(0)
+            if 'date' in data[0]:
+                res['date'] = datetime.strptime(data[0]['date'].split(".")[0], '%Y-%m-%d')
+            else:
+                res['date'] = datetime.date(2100, 1, 1)
+            if 'diameter' in object['summary']:
+                res['diameter'] = float(object['summary']['diameter'])*1000
+            else:
+                res['diameter'] = float(0)
         except Exception as e:
             print(e)
             return res
         return res
+
 
     @app.route("/", methods=["GET", "POST"])
     def index():
@@ -142,6 +152,7 @@ def create_app():
             obj_summary = [get_summary(o, from_date, to_date) for o in obj_detailed_results]
             obj_summary.sort(key=lambda x: x['max_prob'], reverse=True)
             print(f"Total time: {time.time() - start_time: .2f} s. ")
+            
             return render_template('result.html', data=obj_summary)
 
     return app
